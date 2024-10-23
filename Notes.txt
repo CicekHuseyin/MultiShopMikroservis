@@ -1,0 +1,40 @@
+Services-Catalog içine Api projesi oluþturdum.
+MongoDB için paketleri yükledim.(MongoDB.Bson,MongoDB.Driver)
+MultiShop.Catalog içine Entities klasörü açtým.Entitylerimi yazdým.
+MongoDb için entity tanýmlarken:
+public class Product
+    {
+        //Id deðeri için bu 2 attribute eklenmesi gerekiyor.
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ProductID { get; set; }
+        public string ProductName { get; set; }
+        public decimal ProductPrice { get; set; }
+        public string ProductImageUrl { get; set; }
+        public string ProductDescription { get; set; }
+        public string CategoryID { get; set; }
+        //Burada yazdýðým attribute ise altýnda yazdýðým property veritabanýna kaydetmemek ve sorgulamamak için kullanýlýr.
+        [BsonIgnore]
+        public Category Category { get; set; }
+    }
+MultiShop.Catalog daki entityler oluþturuldu.
+MultiShop.Catalog da appsetting.json tarafýnda connection string ve entity adlarýný tanýmladýk:
+{
+  "DatabaseSettings": {
+    "CategoryCollectionName": "Categories",
+    "ProductCollectionName": "Products",
+    "ProductDetailCollectionName": "ProductDetails",
+    "ProductImageCollectionName": "ProductImages",
+    "ConnectionString": "mongodb://localhost:27017",
+    "DatabaseName": "MultiShopCatalogDb"
+  },
+  MultiShop.Catalog Settings klasörü ekledik. Bu klasör veritabaný ile ilgili ayarlarýmýzý yapacak interface ve class larýmýzý 
+  tutacak.
+  Settings içerisinde appsetting.json da tanýmaldýðýmýz verileri interface de property olarak tanýmladýk. Ve o verileri Settings 
+  içinde class tanýmlayarak miras aldýk.(IDatabaseSettings.cs,DatabaseSettings.cs)
+  MultiShop.Catalog içine Dtos klasörü oluþturduk.
+  Her entity e özel Dto lar oluþturuldu.
+  Automapper iþlemi yapýcaz. Automapper bizim Dto ve Entity leri mapliyecek yani eþleþtirecek. Bunun için öncelikle
+  MultiShop.Catalog paketleri yükle.(AutoMapper,AutoMapper.Extensions.Microsoft.DependencyInjection)
+  Mappleme için MultiShop.Catalog içine Mapping klasörü ekledim. Tüm mappleme iþlemleri Mapping klasöründe ki class da tanýmlý.(GeneralMapping.cs)
+  
