@@ -37,4 +37,39 @@ MultiShop.Catalog da appsetting.json tarafýnda connection string ve entity adlar
   Automapper iþlemi yapýcaz. Automapper bizim Dto ve Entity leri mapliyecek yani eþleþtirecek. Bunun için öncelikle
   MultiShop.Catalog paketleri yükle.(AutoMapper,AutoMapper.Extensions.Microsoft.DependencyInjection)
   Mappleme için MultiShop.Catalog içine Mapping klasörü ekledim. Tüm mappleme iþlemleri Mapping klasöründe ki class da tanýmlý.(GeneralMapping.cs)
-  
+  Entitylerin servislerini yazmak için:
+  MultiShop.Catalog Services klasörü ekleyerek her bir entity için klasör oluþturup entitylerin servislerini yazdýk.
+  //var values = await _productCollection.Find<Product>(x => true).ToListAsync(); bu kodda ki filtreleme x=>true ifadesi tüm 
+  entity seçmeye yarar.
+  MultiShop.Catalog içinde Controller larýmýzý tanýmlayarak api leri yazdýk.
+  Program.cs tarafýnda konfigürasyon iþlemleri yapýldý:
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
+
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
+
+//Burada ki konfigürasyon databasesetting içinde ki deðerlere ulaþmak için yazýldý.
+builder.Services.AddScoped<IDatabaseSettings>(sp =>
+{
+    return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
+});
+
+//AddScoped(),her bir HTTP isteði baþýna bir kez oluþturulur. Yani, bir istemci bir istek yaptýðýnda bu istek süresince servis bir kez 
+yaratýlýr ve tekrar kullanýlmak üzere tutulur. Ýstek sona erdiðinde, servis de yok edilir.
+    builder.Services.AddScoped<ICategoryService, CategoryService>();
+//Bir Transient servis her kullanýldýðýnda yeni bir örnek oluþturulur. Yani, bu servis birden çok kez talep edildiðinde her 
+seferinde yeni bir nesne oluþturulur.
+    builder.Services.AddTransient<ICategoryService, CategoryService>();
+//Bir Singleton servis, uygulama baþlatýldýðýnda oluþturulur ve uygulamanýn yaþam süresi boyunca tek bir örnek kullanýlýr. 
+Uygulamanýn tamamýnda ayný nesne paylaþýlýr.
+    builder.Services.AddSingleton<ICategoryService, CategoryService>();
+Apileri test ettik. Ve MultiShop.Catalog mikroservisimiz bitti.
+
+
+
+
