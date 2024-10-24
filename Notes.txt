@@ -69,6 +69,33 @@ seferinde yeni bir nesne oluþturulur.
 Uygulamanýn tamamýnda ayný nesne paylaþýlýr.
     builder.Services.AddSingleton<ICategoryService, CategoryService>();
 Apileri test ettik. Ve MultiShop.Catalog mikroservisimiz bitti.
+-----------------------------------------------------------------
+Services-Discount klasörüne yeni bir api projesi oluþturdum.(MultiShop.Discount)
+Proje içine klasör yapýlarýmý ekledim.(Entities,Dtos,Services,Context)
+MSSQL veritabanýnda Dapper ile çalýþacaðýmýz için projeye paketleri kurdum.Paketler:
+    Microsoft.EntityFrameworkCore
+    Microsoft.EntityFrameworkCore.Tools
+    Microsoft.EntityFrameworkCore.Design
+    Microsoft.EntityFrameworkCore.SqlServer
+    Dapper
+
+Entity klasörüne entity mizi oluþturduk.(Coupon.cs)
+Context klasöründe Db ye baðlanmak için gerekli iþlemler yapýldý.(DapperContext.cs)
+Migration iþlemi yapýldý.(add-migration mig1,update-database)
+appsetting.json da connectionstring tanýmladýk:
+    "ConnectionStrings": {
+        "DefaultConnection": "Server=DESKTOP-KR485FT\\SQLEXPRESS; Initial Catalog=MultiShopDiscountDb; Integrated Security=true"
+      },
+Dtos klasöründe Dto lar oluþturuldu.
+Services klasöründe serviceleri oluþturup iþlemler yapýldý.
+Controller klsöründe controller oluþturuldu. Apiyi yazdýk.
+Program.cs tarafýnda konfigürasyon iþlemleri yapýldý:
+    builder.Services.AddTransient<DapperContext>();
+    builder.Services.AddTransient<IDiscountService, DiscountService>();
+Api testleri yapýldý. Bu api projesi de bitti.
+------------------------------------------------------------------------------------
+
+
 
 
 
