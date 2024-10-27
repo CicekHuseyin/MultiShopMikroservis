@@ -94,6 +94,28 @@ Program.cs tarafýnda konfigürasyon iþlemleri yapýldý:
     builder.Services.AddTransient<IDiscountService, DiscountService>();
 Api testleri yapýldý. Bu api projesi de bitti.
 ------------------------------------------------------------------------------------
+Order Mikroservisi için Services altýna Order kalsörü ekle.Bu mikroservis de "Onion Architecture" kullanýcaz.
+Order içine Core,Infrastructure,Presentation klasörleri ekle
+Core klasörü içine 2 tane class library ekle(MultiShop.Order.Application,MultiShop.Order.Domain)
+Infrastructure klasörüne Class library ekledik.(MultiShop.Order.Persistence)
+Presentation klasörüne api projesi ekledik.(MultiShop.Order.WebApi)
+MultiShop.Order.Domain içine Entities klasörü oluþturarak entityleri tanýmladýk.
+MultiShop.Order.Application için Interfaces,Features klasörü ekledik.Features klasörü bizim tasarým desenelrimizi tutacak.
+Interfaces klasörüne interface ekledik.(IRepository)
+Features klasörüne CQRS ve Mediator klasörleri ekledik.
+CQRS klasörüne CQRS Design Pattern daki klasör yapýsýný oluþturdu.CQRS içinde:
+Results klasöründe getirmek istediði verilere göre entity ler oluþturdu.
+Queries klasöründe Id ye göre getireceði deðerler için bu klasörde entity oluþturdu. O entity de ise parametre alacak Id deðeri var.
+Commands klasöründe Ekleme ve Güncelleme için oluþturulmuþ class lara deðerler girildi.(Dto gibi)
+Handlers klasöründe ise CRUD iþlemleri yapýlýyor.
+Þimdi Core-Infrastructure içinde ki MultiShop.Order.Persistence katmanýna paketleri kurduk(Sqlserver,core,design,tools)
+Context ve Repositories klasörleri oluþturduk. Ve doldurduk.
+Presentation-MultiShop.Order.WebApi projesine 2 entity nin kontroller larýný ekledik. Ve apilerini yazdýk.
+
+
+
+
+
 
 
 
