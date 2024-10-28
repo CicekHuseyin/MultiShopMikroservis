@@ -111,6 +111,38 @@ Handlers klasöründe ise CRUD iþlemleri yapýlýyor.
 Þimdi Core-Infrastructure içinde ki MultiShop.Order.Persistence katmanýna paketleri kurduk(Sqlserver,core,design,tools)
 Context ve Repositories klasörleri oluþturduk. Ve doldurduk.
 Presentation-MultiShop.Order.WebApi projesine 2 entity nin kontroller larýný ekledik. Ve apilerini yazdýk.
+Yazdýðýmýz Handler larýn Progam.cs tarafýnda konfigürasyonlarýný yaptýk:
+
+    builder.Services.AddScoped<GetAddressByIdQueryHandler>();
+    builder.Services.AddScoped<GetAddressByIdQueryHandler>();
+    builder.Services.AddScoped<CreateAddressCommandHandler>();
+    builder.Services.AddScoped<UpdateAddressCommandHandler>();
+    builder.Services.AddScoped<RemoveAddressCommandHandler>();
+
+    builder.Services.AddScoped<GetOrderDetailQueryHandler>();
+    builder.Services.AddScoped<GetOrderDetailByIdQueryHandler>();
+    builder.Services.AddScoped<CreateOrderDetailCommandHandler>();
+    builder.Services.AddScoped<UpdateOrderDetailCommandHandler>();
+    builder.Services.AddScoped<RemoveOrderDetailCommandHandler>();
+
+Order-Core-MultiShop.Order.Application ve Order-Presentation-MultiShop.Order.WebApi projelerine MediatR Design Pattern için paket
+yükledim.(MediatR,MediatR.Extensions.Microsoft.DependencyInjection)
+Order-Core-MultiShop.Order.Application-Features-Mediator klasörüne Mediatör klasör yapýsý oluþturdum.(Commands,Handlers,Queries,Results)
+Results klasörüne id ye göre gelecek ve tüm listeyi getirecek veriler için entityler yazdým.
+Queries klasörüne var olacak parametre deðerleri için entity oluþturup constructor ile id parametresi oluþturdum.
+Commands klsöründe ise Ekleme silme güncellemek istediðim veriler için entityler oluþturdum.(Dto gibi)
+Handlers klasöründe tüm iþlemlerin aksiyonlarý yazýldý.
+MultiShop.Order.WebApi tarafýnda controller oluþturarak apiyi yazdýk.
+MediatR ýn konfigürasyonu için Order-Core-MultiShop.Order.Application içine Services klasörü ekledik.Bu klasörde ki sýnýf-
+Program.cs de yazacaðýmýz konfigürasyon iþlemini buraya yazýp Program.cs de çaðýrýcaz.
+Þimdi Program.cs de tanýmaldýðýmýz Konfigürasyon class ýný çaðýrýyoruz:
+
+    builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+    builder.Services.AddApplicationService(builder.Configuration);
+
+
+
+
 
 
 
