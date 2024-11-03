@@ -140,6 +140,42 @@ Program.cs de yazacaðýmýz konfigürasyon iþlemini buraya yazýp Program.cs de çaðý
     builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     builder.Services.AddApplicationService(builder.Configuration);
 
+Docker Nedir?
+-Docker, uygulamalarý hýzla kurmak, daðýtmak ve çalýþtýrmak için kullanýlan açýk kaynaklý bir platformdur. Docker, uygulamalarý ve
+baðýmlýlýklarýný bir arada tutarak konteyner adý verilen izole edilmiþ bir ortamda çalýþtýrýr. Bu sayede, uygulamalar her ortamda 
+tutarlý ve sorunsuz bir þekilde çalýþabilir.
+Container Nedir?
+-Docker, uygulamalarý çalýþtýrmak için konteynerleri kullanýr. Konteynerler, uygulama ile birlikte ihtiyaç duyduðu tüm 
+baðýmlýlýklarý içerir ve sistemin diðer kýsýmlarýndan izole bir ortamda çalýþýr. Bu sayede, geliþtiriciler uygulamalarý "her yerde
+çalýþýr" mantýðýyla oluþturabilirler.
+Portainer Nedir?
+-Portainer, Docker ve Kubernetes gibi konteyner tabanlý altyapýlarý yönetmek için kullanýlan, kullanýcý dostu bir grafik arayüz 
+(GUI) sunan bir konteyner yönetim platformudur. Docker CLI (komut satýrý arayüzü) ile yapýlan birçok iþlemi görsel bir ortamda 
+gerçekleþtirme imkaný saðlar, böylece hem teknik olmayan kullanýcýlar hem de sistem yöneticileri için kolaylýk sunar.
+Dbeaver Nedir?
+-DBeaver, popüler bir açýk kaynaklý veritabaný yönetim aracýdýr ve çeþitli veritabanlarýný (SQL, NoSQL ve Big Data veritabanlarý da
+hil) yönetmek ve sorgulamak için kullanýlýr. Çoklu platform desteðine sahiptir ve Windows, macOS ve Linux gibi iþletim 
+sistemlerinde çalýþabilir. DBeaver, özellikle veritabaný geliþtiricileri, veri analistleri ve sistem yöneticileri için veritabaný 
+baðlantýlarýný, veri sorgulama ve düzenleme iþlemlerini kolaylaþtýran güçlü özellikler sunar.
+----------------------------------------------------------------------------------------------------
+IdentityServer4.0 yüklemek için:
+cmd ye gir.
+dotnet new -i identityserver4.templates yaz.
+ardýndan cmd de IdentityServer ýn kurulacaðý klasörün yolunu seç:
+cd C:\Inspimo Çalýþmalarý Hüso\MultiShop\IdentityServer
+daha sonra dotnet new is4aspid --name MultiShop.IdentityServer yaz o klasöre kurulur.(Yazdýktan sonra seçenek çýkýyor n ye bas)
+yüklediðimiz IdentityServer ý projeye dahil etme:
+Solition a bir klasör aç (IdentityServer). Klasöre sað týkla add-exisiting project de ýdentityserver içinde ki .proj dosyasýný seç.
+MultiShop.IdentityServer projesinde Sqlserver paketini yükle(3.1.5)
+MultiShop.IdentityServer-Models-ApplicationUser.cs ye prop ekle
+appsettings.json da connection string i tanýmla
+satartup.cs de var olan options.UseSqlLite(Configuration.GetConnectionString("DefaultConnection"))); bu kodu 
+options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); bu þekil deðiþtir.
+ýdentityserver a seç migration yap
+MultiShop.IdentityServer projesine Dtos klasörü ekle. Dto larý oluþtur.
+MultiShop.IdentityServer projesine Controllers ekle. Controller oluþtur.
+Api mizi Postman üzerinde test ettik.
+
 
 
 
