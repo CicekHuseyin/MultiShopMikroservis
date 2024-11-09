@@ -175,6 +175,17 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); b
 MultiShop.IdentityServer projesine Dtos klasörü ekle. Dto larý oluþtur.
 MultiShop.IdentityServer projesine Controllers ekle. Controller oluþtur.
 Api mizi Postman üzerinde test ettik.
+//Authentication: Kimlik doðrulamadýr.
+//Authorization: sisteme giriþ için yetki kontrolüdür.
+IdentityServer içinde Config.cs alaný verilmiþ. Bu alan içinde çeþitli yetkilere sahip kullanýcýlarýn yapabilecekleri iþlemlerle
+ilgili kýsýtlamalardýr.
+Config class ýna yetkilendirme iþlemlerini ve ksýýtlamalarý yaptýk.
+Þimdi IdentityServer da Startup.cs de token alabilmek için konfigürasyon kodu:
+    .AddInMemoryApiResources(Config.ApiResources)
+IdentityServer mikroservisini koruma altýna almak için Startup.cs e bunlarý ekle.
+    
+    services.AddLocalApiAuthentication();
+    app.UseAuthorization();
 
 
 
