@@ -186,6 +186,40 @@ IdentityServer mikroservisini koruma altýna almak için Startup.cs e bunlarý ekle
     
     services.AddLocalApiAuthentication();
     app.UseAuthorization();
+Services-Catalog-MultiShop.Catalog paket yükle(Microsoft.AspNetCore.Authentication.JwtBearer)
+MultiShop.Catalog Program.cs e eklenilen kodlar:
+
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+    {
+        opt.Authority = builder.Configuration["IdentityServerUrl"]; //IdentityServerUrl appsetting.json da tanýmlandý.
+        opt.Audience = "ResourceCatalog";
+        opt.RequireHttpsMetadata = false;//Program.cs de yazdýðýmýz url http olarak yazdýðýmýz için bu ayarý yapmamýz gerekiyor.
+    });
+
+    app.UseAuthentication();
+MultiShop.Catalog daki Product ve Categories Controller larýna [Authorize] attribute ekledik.
+Services-Discount-MultiShop.Discount paket yükle(Microsoft.AspNetCore.Authentication.JwtBearer)
+MultiShop.Discount Program.cs e eklenilen kodlar:
+
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+    {
+        opt.Authority = builder.Configuration["IdentityServerUrl"]; //IdentityServerUrl appsetting.json da tanýmlandý.
+        opt.Audience = "ResourceDiscount";
+        opt.RequireHttpsMetadata = false;//Program.cs de yazdýðýmýz url http olarak yazdýðýmýz için bu ayarý yapmamýz gerekiyor.
+    });
+
+    app.UseAuthentication();
+
+MultiShop.Discount daki Discounts Controllerýna [Authorize] attribute ekledik.
+Mikroservislerin port numaralarýný düzenlemek için:
+Catalog Mikroservisin Properties deki launchsettings de ki portu þu þekil düzenledik:
+    "applicationUrl": "https://localhost:7070"
+    "launchBrowser": false, //Buranýn false olmasý mikroservis ayaða kalkacak fakat tarayýcýda gözükmeyecek.
+discount Mikroservisin Properties deki launchsettings de ki portu þu þekil düzenledik:
+    "applicationUrl": "https://localhost:7071"
+    "launchBrowser": false, //Buranýn false olmasý mikroservis ayaða kalkacak fakat tarayýcýda gözükmeyecek.
+
+
 
 
 
