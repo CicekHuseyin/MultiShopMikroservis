@@ -148,6 +148,8 @@ Container Nedir?
 -Docker, uygulamalarý çalýþtýrmak için konteynerleri kullanýr. Konteynerler, uygulama ile birlikte ihtiyaç duyduðu tüm 
 baðýmlýlýklarý içerir ve sistemin diðer kýsýmlarýndan izole bir ortamda çalýþýr. Bu sayede, geliþtiriciler uygulamalarý "her yerde
 çalýþýr" mantýðýyla oluþturabilirler.
+Portainer Kullanýcý Adý: admin
+Password:Huseyin.2001
 Portainer Nedir?
 -Portainer, Docker ve Kubernetes gibi konteyner tabanlý altyapýlarý yönetmek için kullanýlan, kullanýcý dostu bir grafik arayüz 
 (GUI) sunan bir konteyner yönetim platformudur. Docker CLI (komut satýrý arayüzü) ile yapýlan birçok iþlemi görsel bir ortamda 
@@ -213,13 +215,77 @@ MultiShop.Discount Program.cs e eklenilen kodlar:
 MultiShop.Discount daki Discounts Controllerýna [Authorize] attribute ekledik.
 Mikroservislerin port numaralarýný düzenlemek için:
 Catalog Mikroservisin Properties deki launchsettings de ki portu þu þekil düzenledik:
-    "applicationUrl": "https://localhost:7070"
+    "applicationUrl": "https://localhost:7072"
     "launchBrowser": false, //Buranýn false olmasý mikroservis ayaða kalkacak fakat tarayýcýda gözükmeyecek.
 discount Mikroservisin Properties deki launchsettings de ki portu þu þekil düzenledik:
     "applicationUrl": "https://localhost:7071"
     "launchBrowser": false, //Buranýn false olmasý mikroservis ayaða kalkacak fakat tarayýcýda gözükmeyecek.
 
+Services-Order-Presentation-MultiShop.Order.WebApi paket yükle(Microsoft.AspNetCore.Authentication.JwtBearer)
+MultiShop.Discount Program.cs e eklenilen kodlar:
 
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+    {
+        opt.Authority = builder.Configuration["IdentityServerUrl"]; //IdentityServerUrl appsetting.json da tanýmlandý.
+        opt.Audience = "ResourceDiscount";
+        opt.RequireHttpsMetadata = false;//Program.cs de yazdýðýmýz url http olarak yazdýðýmýz için bu ayarý yapmamýz gerekiyor.
+    });
+
+    app.UseAuthentication();
+Properties-launchSettings e Profiles içinde ki launchBrowser özelliðini false yap. applicationUrl sini deðiþtir.
+    "launchBrowser": false,
+    "applicationUrl": "https://localhost:7073;"
+
+MultiShop.Order daki Discounts Controllerýna [Authorize] attribute ekledik.
+
+----------------------------------------------------------------------------------
+Cargo Mikroservisi kuruluyor.(N Katmanlý Mimari)
+
+Services içine Cargo klasörü oluþtur. Bunun içine 4 class library 1 tane web api projeleri oluþtur.
+MultiShop.Cargo.EntityLayer katmanýna paketleri yükle.(Sqlserver,Core,Design,Tools)
+MultiShop.Cargo.EntityLayer katmanýna Concrete klasörü ekle.Ýçine Entityleri oluþtur.
+MultiShop.Cargo.DataAccessLayer katmanýna Concrete klasörü ekle. içine CargoContext class oluþtur.
+Migration iþlemini yap.
+MultiShop.Cargo.DataAccessLayer katmanýna Abstract klasörü ekle. Ýçine Interfaceleri oluþtur.(Generic Dal)
+MultiShop.Cargo.DataAccessLayer katmanýna Repositories klasörü ekle. Ýçine GenericReponu oluþtur.
+MultiShop.Cargo.DataAccessLayer katmanýna EntityFramework klasörü ekle. Ýçine Ef classlarýný oluþtur.
+MultiShop.Cargo.BusinessLayer katmanýna Abstract klasörü ekle. Ýçine Interfaceleri oluþtur.(Service)
+MultiShop.Cargo.BusinessLayer katmanýna Concrete klasörü ekle. Ýçine Manager classlarýný ekle oluþtur.
+MultiShop.Cargo.WebApi katmanýna Controller lar oluþturuldu. Endpointler yazýldý. Ekleme ve Güncelleme iþlemleri için
+MultiShop.Cargo.Dtos katmanýna Dtos klasörü oluþturuldu. Ve içine her bir entity e ait Dto lar eklendi.
+MultiShop.Cargo.WebApi katmanýnda launchsettings de deðiþilen ögeler:
+    "launchBrowser": false,
+    "applicationUrl": "https://localhost:7074;"
+MultiShop.Cargo.WebApi katmanýnda appsettings de ýdentity i dahil et:
+    "IdentityServerUrl": "http://localhost:5001",
+MultiShop.Cargo.WebApi katmanýna JWT paketini yükle(Microsoft.AspNetCore.Authentication.JwtBearer)
+MultiShop.Cargo.WebApi katmanýn da Program.cs de konfigürasyon iþlemleri yapýldý:
+    builder.Services.AddDbContext<CargoContext>();
+
+    builder.Services.AddScoped<ICargoCompanyDal, EfCargoCompanyDal>();
+    builder.Services.AddScoped<ICargoCompanyService, CargoCompanyManager>();
+
+    builder.Services.AddScoped<ICargoCustomerDal, EfCargoCustomerDal>();
+    builder.Services.AddScoped<ICargoCustomerService, CargoCustomerManager>();
+
+    builder.Services.AddScoped<ICargoDetailDal, EfCargoDetailDal>();
+    builder.Services.AddScoped<ICargoDetailService, CargoDetailManager>();
+
+    builder.Services.AddScoped<ICargoOperationDal, EfCargoOperationDal>();
+    builder.Services.AddScoped<ICargoOperationService, CargoOperationManager>();
+
+Cargo mikroservisin korunmasý için MultiShop.IdentityServer projesinde Config.cs de Cargo mikroservisini de ekledik.
+MultiShop.Cargo Program.cs e eklenilen kodlar:
+
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+    {
+        opt.Authority = builder.Configuration["IdentityServerUrl"]; //IdentityServerUrl appsetting.json da tanýmlandý.
+        opt.Audience = "ResourceCargo";
+        opt.RequireHttpsMetadata = false;//Program.cs de yazdýðýmýz url http olarak yazdýðýmýz için bu ayarý yapmamýz gerekiyor.
+    });
+
+    app.UseAuthentication();
+MultiShop.Cargo daki tüm Controllerlara [Authorize] attribute ekledik.
 
 
 
