@@ -286,6 +286,16 @@ MultiShop.Cargo Program.cs e eklenilen kodlar:
 
     app.UseAuthentication();
 MultiShop.Cargo daki tüm Controllerlara [Authorize] attribute ekledik.
+Cargo mikroservisimize Dto larý manuel yerine AutoMapper ile mappleme iþlemi yapacaðýz:
+MultiShop.Cargo.WebApi ye paket yükle(AutoMapper.Extensions.Microsoft.DependencyInjection)
+MultiShop.Cargo.DtoLayer katmanýnda Dtos içine bir MapperProfile class ý oluþtur. O class a mappleyeceðin Dto ve entityleri ekle.
+Ama Bu class a Profile dan kalýtým alabilmek için Dto katmanýna paket yükle(AutoMapper)
+Mappleme iþlemlerini yaptýktan sonra MultiShop.Cargo.WebApi Program.cs de Automapper ý ekle:
+    builder.Services.AddAutoMapper(typeof(MapperProfile).Assembly);
+daha sonra Controllerlar da Imapper ý construct ile tanýmla. Ve mappleme iþlemlerini yap.
+
+
+
 
 
 

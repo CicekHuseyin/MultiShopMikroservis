@@ -1,9 +1,11 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MultiShop.Cargo.BusinessLayer.Abstract;
 using MultiShop.Cargo.BusinessLayer.Concrete;
 using MultiShop.Cargo.DataAccessLayer.Abstract;
 using MultiShop.Cargo.DataAccessLayer.Concrete;
 using MultiShop.Cargo.DataAccessLayer.EntityFramework;
+using MultiShop.Cargo.DtoLayer.Dtos;
 using MultiShop.Cargo.DtoLayer.Dtos.CargoCompanyDtos;
 using MultiShop.Cargo.EntityLayer.Concrete;
 
@@ -15,6 +17,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     opt.Audience = "ResourceCargo";
     opt.RequireHttpsMetadata = false;//Program.cs de yazdýðýmýz url http olarak yazdýðýmýz için bu ayarý yapmamýz gerekiyor.
 });
+builder.Services.AddAutoMapper(typeof(MapperProfile).Assembly);
+
 
 builder.Services.AddDbContext<CargoContext>();
 

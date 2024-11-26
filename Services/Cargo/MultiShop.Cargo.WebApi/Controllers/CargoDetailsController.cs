@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MultiShop.Cargo.BusinessLayer.Abstract;
@@ -13,10 +14,12 @@ namespace MultiShop.Cargo.WebApi.Controllers
     public class CargoDetailsController : ControllerBase
     {
         private readonly ICargoDetailService _cargoDetailService;
+        private readonly IMapper _mapper;
 
-        public CargoDetailsController(ICargoDetailService cargoDetailService)
+        public CargoDetailsController(ICargoDetailService cargoDetailService, IMapper mapper)
         {
             _cargoDetailService = cargoDetailService;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult CargoDetailList()
@@ -27,13 +30,7 @@ namespace MultiShop.Cargo.WebApi.Controllers
         [HttpPost]
         public IActionResult CreateCargoDetail(CreateCargoDetailDto createCargoDetailDto)
         {
-            CargoDetail cargoDetail = new CargoDetail()
-            {
-                Barcode = createCargoDetailDto.Barcode,
-                SenderCustomer = createCargoDetailDto.SenderCustomer,
-                ReceiverCustomer = createCargoDetailDto.ReceiverCustomer,
-                CargoCompanyId=createCargoDetailDto.CargoCompanyId
-            };
+            CargoDetail cargoDetail = _mapper.Map<CargoDetail>(createCargoDetailDto);
             _cargoDetailService.TInsert(cargoDetail);
             return Ok("Kargo Detayları Başarıyla Oluşturuldu.");
         }
@@ -52,14 +49,7 @@ namespace MultiShop.Cargo.WebApi.Controllers
         [HttpPut]
         public IActionResult UpdateCargoDetail(UpdateCargoDetailDto updateCargoDetailDto)
         {
-            CargoDetail cargoDetail = new CargoDetail()
-            {
-                Barcode = updateCargoDetailDto.Barcode,
-                SenderCustomer = updateCargoDetailDto.SenderCustomer,
-                ReceiverCustomer = updateCargoDetailDto.ReceiverCustomer,
-                CargoCompanyId = updateCargoDetailDto.CargoCompanyId,
-                CargoDetailId=updateCargoDetailDto.CargoDetailId
-            };
+            CargoDetail cargoDetail = _mapper.Map<CargoDetail>(updateCargoDetailDto);
             _cargoDetailService.TUpdate(cargoDetail);
             return Ok("Kargo Detayları Başarıyla Güncellendi.");
         }

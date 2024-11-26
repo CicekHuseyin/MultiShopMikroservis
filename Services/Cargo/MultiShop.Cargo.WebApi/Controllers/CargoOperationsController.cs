@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MultiShop.Cargo.BusinessLayer.Abstract;
@@ -13,10 +14,12 @@ namespace MultiShop.Cargo.WebApi.Controllers
     public class CargoOperationsController : ControllerBase
     {
         private readonly ICargoOperationService _cargoOperationService;
+        private readonly IMapper _mapper;
 
-        public CargoOperationsController(ICargoOperationService cargoOperationService)
+        public CargoOperationsController(ICargoOperationService cargoOperationService, IMapper mapper)
         {
             _cargoOperationService = cargoOperationService;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult CargoOperationList()
@@ -27,12 +30,7 @@ namespace MultiShop.Cargo.WebApi.Controllers
         [HttpPost]
         public IActionResult CreateCargoOperation(CreateCargoOperationDto createCargoOperationDto)
         {
-            CargoOperation cargoOperation = new CargoOperation()
-            {
-                Barcode = createCargoOperationDto.Barcode,
-                Description = createCargoOperationDto.Description,
-                OperationDate = createCargoOperationDto.OperationDate,
-            };
+            CargoOperation cargoOperation = _mapper.Map<CargoOperation>(createCargoOperationDto);
             _cargoOperationService.TInsert(cargoOperation);
             return Ok("Kargo Operasyonu Başarıyla Oluşturuldu.");
         }
@@ -51,13 +49,7 @@ namespace MultiShop.Cargo.WebApi.Controllers
         [HttpPut]
         public IActionResult UpdateCargoOperation(UpdateCargoOperationDto updateCargoOperationDto)
         {
-            CargoOperation cargoOperation = new CargoOperation()
-            {
-                CargoOperationId=updateCargoOperationDto.CargoOperationId,
-                Barcode = updateCargoOperationDto.Barcode,
-                Description = updateCargoOperationDto.Description,
-                OperationDate = updateCargoOperationDto.OperationDate,
-            };
+            CargoOperation cargoOperation = _mapper.Map<CargoOperation>(updateCargoOperationDto);
             _cargoOperationService.TUpdate(cargoOperation);
             return Ok("Kargo Operasyonu Başarıyla Güncellendi.");
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MultiShop.Cargo.BusinessLayer.Abstract;
@@ -13,10 +14,12 @@ namespace MultiShop.Cargo.WebApi.Controllers
     public class CargoCustomersController : ControllerBase
     {
         private readonly ICargoCustomerService _cargoCustomerService;
+        private readonly IMapper _mapper;
 
-        public CargoCustomersController(ICargoCustomerService cargoCustomerService)
+        public CargoCustomersController(ICargoCustomerService cargoCustomerService, IMapper mapper)
         {
             _cargoCustomerService = cargoCustomerService;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult CargoCustomerList()
@@ -27,16 +30,7 @@ namespace MultiShop.Cargo.WebApi.Controllers
         [HttpPost]
         public IActionResult CreateCargoCustomer(CreateCargoCustomerDto createCargoCustomerDto)
         {
-            CargoCustomer customer = new CargoCustomer()
-            {
-                Address = createCargoCustomerDto.Address,
-                City = createCargoCustomerDto.City,
-                District = createCargoCustomerDto.District,
-                Email = createCargoCustomerDto.Email,
-                Name = createCargoCustomerDto.Name,
-                Phone = createCargoCustomerDto.Phone,
-                Surname = createCargoCustomerDto.Surname
-            };
+            CargoCustomer customer = _mapper.Map<CargoCustomer>(createCargoCustomerDto);
             _cargoCustomerService.TInsert(customer);
             return Ok("Kargo Müşterisi Başarıyla Eklendi.");
         }
@@ -55,17 +49,7 @@ namespace MultiShop.Cargo.WebApi.Controllers
         [HttpPut]
         public IActionResult UpdateCargoCompany(UpdateCargoCustomerDto updateCargoCustomerDto)
         {
-            CargoCustomer customer = new CargoCustomer()
-            {
-                CargoCustomerId = updateCargoCustomerDto.CargoCustomerId,
-                Address = updateCargoCustomerDto.Address,
-                City = updateCargoCustomerDto.City,
-                District = updateCargoCustomerDto.District,
-                Email = updateCargoCustomerDto.Email,
-                Name = updateCargoCustomerDto.Name,
-                Phone = updateCargoCustomerDto.Phone,
-                Surname = updateCargoCustomerDto.Surname
-            };
+            CargoCustomer customer = _mapper.Map<CargoCustomer>(updateCargoCustomerDto);
             _cargoCustomerService.TUpdate(customer);
             return Ok("Kargo Müşterisi Başarıyla Güncellendi.");
         }
