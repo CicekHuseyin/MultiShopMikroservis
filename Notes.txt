@@ -293,6 +293,81 @@ Ama Bu class a Profile dan kalýtým alabilmek için Dto katmanýna paket yükle(Auto
 Mappleme iþlemlerini yaptýktan sonra MultiShop.Cargo.WebApi Program.cs de Automapper ý ekle:
     builder.Services.AddAutoMapper(typeof(MapperProfile).Assembly);
 daha sonra Controllerlar da Imapper ý construct ile tanýmla. Ve mappleme iþlemlerini yap.
+--------------------------------------------------------------------------
+Basket Mikroservisi:
+Redis Nedir:C ile yazýlmýþ, key-value þeklinde tasarlanmýþ bir NoSQL veritabanýdýr. Veriyi bellekte tuttuðu için çok hýzlý okuma 
+ve yazma yapýlýr.
+Services-Basket klasörünü oluþturdum.
+Basket klasörüne bir api projesi oluþturdum.(MultiShop.Basket)
+MultiShop.Basket projesine gerekli paketleri kurdum:
+    Microsoft.AspNetCore.Authentication.JwtBearer
+    StackExchange.Redis
+MultiShop.Basket katmanýnda launchsettings de deðiþilen ögeler:
+    "launchBrowser": false,
+    "applicationUrl": "https://localhost:7075;"
+    
+MultiShop.Basket içine Dtos klasörü ekleyerek Dto larýmýzý oluþturduk.
+Portainer üzerinden RedisDb containerýný ekledik. Portainer-Templates-Application menüsünden
+MultiShop.Basket appsettings de Redis için eklenen port ayarý:
+    "RedisSettings": {
+    "Host": "localhost",
+    "Port": 6379
+    },
+MultiShop.Basket Settings klasörü oluþtur. Bu klasör appsettings deki tanýmlamýþ olduðumuz ayarlarý tutacak.
+Settings içinde ki Class appsettings.json da tanýmladýðýmýz deðerler ile eþleþecek(RedisSettings.cs)
+MultiShop.Basket mikroservisinde appsettings.json da yaptýðýmýz port ayarýný çaðýrabilmek için Settings klasörüne RedisService.cs
+class ý tanýmlayýp oradan Redis e baðlanýyoruz.
+Crud iþlemlerini yapmak için Services klasörü oluþturdum.  IBasketService de metotlarýmý tanýmaldým. BasketService de IBasketService
+içindeki metotlarý kalýtým alarak doldurdum.
+Kullaýcý bilgilerine yani UserId ye ulaþmak için LoginService adýnda bir klasör açtým. Bu klasöre ILoginService adýnda bir interface
+oluþturdum. Bu interface userid yi property olarak tutuyor. LoginService.cs de ise ILoginService deki userid yi bulmam için bir
+metot tanýmladým.
+MultiShop.Basket de BasketController oluþturup CRUD iþlemlerimi yaptým.
+
+MultiShop.IdentityServer Config içinde Basket Mikroservisini yetkilendirmesini yaptým.
+
+MultiShop.Basket Program.cs e eklenilen kodlar:
+
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+    {
+        opt.Authority = builder.Configuration["IdentityServerUrl"]; //IdentityServerUrl appsetting.json da tanýmlandý.
+        opt.Audience = "ResourceBasket";
+        opt.RequireHttpsMetadata = false;//Program.cs de yazdýðýmýz url http olarak yazdýðýmýz için bu ayarý yapmamýz gerekiyor.
+    });
+    //Redis konfigürasyon iþlemleri
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddScoped<ILoginService, LoginService>();
+    builder.Services.AddScoped<IBasketService, BasketService>();
+    builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection("RedisSettings"));
+    builder.Services.AddSingleton<RedisService>(sp =>
+    {
+        var redisSettings = sp.GetRequiredService<IOptions<RedisSettings>>().Value;
+        var redis = new RedisService(redisSettings.Host, redisSettings.Port);
+        redis.Connect();
+        return redis;
+    });
+    //Proje seviyesinde Authentication iþlemi:
+    //Bu requireAuthorizePolicy deðiþken içine bir kullanýcýnýn zorunlu olmasý gerektiðini çaðýrdýk.
+    var requireAuthorizePolicy =new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    //Programý çalýþtýrdýðýmýzda kullanýcýnýn bilgileri içindek isub maplenmiþ oldarak geliyor. Direk sub ý görmek adýna mappleme iþ
+    //lemini bu kod satýrý ile kaldýrýp direk kullanýcýnýn sub deðerine ulaþabiliriz.
+    JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+    builder.Services.AddControllers(opt =>
+    {
+        opt.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));
+    });
+
+    app.UseAuthentication();
+
+
+
+
+
+
+
+
+
 
 
 
