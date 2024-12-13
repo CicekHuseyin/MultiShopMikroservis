@@ -359,6 +359,26 @@ MultiShop.Basket Program.cs e eklenilen kodlar:
     });
 
     app.UseAuthentication();
+------------------------------------------------------------------------------------------------
+Solition içerisine Frontends klasörü açarak yapacaðýmýz tasarýmlarý buraya ekliyoruz.
+Bu klasöre Asp.Net Core Web Application projesi ekliyoruz.(MultiShop.WebUI)
+MultiShop.WebUI projenin wwwroot içerisine template klasörünü ekle(online-shop-website-template)
+Controller tarafýnda AdminLayoutController oluþtur. Controller da view oluþtur. Oluþturduðun view e template de ki contact sayfasýný
+yapýþtýr.
+Controller da DefaultController oluþtur. Bu kontroller daki view de ise layout olarak AdminLayout daki index i seç.
+ViewComponent kullanýmý:
+    -Projede ViewComponents adýnda klsör aç.
+    -Yapacaðýn partial alaný için klasör aç(UILayoutViewComponents)
+    -Klasör içine class oluþtur.(_HeadUILayoutComponentPartial.cs)
+    -Views-Shared içine klasör oluþtur.(Components)
+    -Ýçine yukarýda tanýmladýðýn class adýnda bir klasör aç(_HeadUILayoutComponentPartial)
+    -Bu klasör içine bir view ekle. Partial olarak (Default.cshtml)
+    -Ana view den kesmek istediðin alaný kes bu partial içine yapýþtýr.(ana view => UILaoyut.cshtml)
+    -Kestiðin yere partial ý çaðýrmak için '@await Component.InvokeAsync("_HeadUILayoutComponentPartial")' kodu yaz.
+iþlem bu kadar.
+Ýndirdiðimiz template de anasayfa yý View Component ler ile böldük. Anasayfa tasarýmý bitti.
+
+
 
 
 
