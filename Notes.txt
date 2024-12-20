@@ -378,7 +378,8 @@ ViewComponent kullanýmý:
 iþlem bu kadar.
 Ýndirdiðimiz template de anasayfa yý View Component ler ile böldük. Anasayfa tasarýmý bitti.
 Ürünler ve detay sayfasý için controller oluþturuldu. View componentler ile UI tasarýmlarý yapýldý. Ürün ve Ürün detay sayfasý bitti.
-
+Shopping Card sayfasý için controller oluþturuldu. View componentler ile UI tasarýmlarý yapýldý. Sepet sayfasý bitti.
+Contact sayfasý için controller oluþturuldu. View componentler ile UI tasarýmlarý yapýldý. Ýletiþim sayfasý bitti.
 
 
 
