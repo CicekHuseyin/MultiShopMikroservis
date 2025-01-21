@@ -381,6 +381,16 @@ iþlem bu kadar.
 Shopping Card sayfasý için controller oluþturuldu. View componentler ile UI tasarýmlarý yapýldý. Sepet sayfasý bitti.
 Contact sayfasý için controller oluþturuldu. View componentler ile UI tasarýmlarý yapýldý. Ýletiþim sayfasý bitti.
 
+.cshtml sayfalarýnda taglarýn gelmemesinin sebebi Admin areasýnda View içerisinde _ViewImports dosyasýnýn olmamasý
+bu dosya MultiShop.WebUI içinde Views içinden kopyalayýp admin areasýn view içine yapýþtýrdýk.
+
+@model CreateCategoryDto modeli kýsa tutmak için ilgili path alanýný _ViewImports dosyasýna tanýmlarsak problem olmaz.
+
+_ViewImports.cshtml içine:
+@using MultiShop.DtoLayer.CatalogDtos.CategoryDtos
+
+Admin panelinde category e ait CRUD iþlemleri bitti.
+
 
 
 
