@@ -391,6 +391,32 @@ _ViewImports.cshtml içine:
 
 Admin panelinde category e ait CRUD iþlemleri bitti.
 
+-----------------------------------------------------------------------
+Feature Slider tablosu ekleme iþlemleri : 
+
+Services-Catalog-Entities-FeatureSlider.cs entity sini ekle.
+Services-Catalog-Dtos-FeatureSliderDtos içine dto larýný ekle.
+Services-Catalog-Services-FeatureSliderServices içine interface lerini ekle class ile implement et.
+appsettings.json a bir koleksiyon kodu ekle:
+    "FeatureSliderCollectionName": "FeatureSliders",
+bu eklediðin kodu Services-Catalog-Settings içinde interface de tanýmla. class da ise implement et.
+Services-Catalog-Mapping de Mappleme iþlemlerini yap.
+Sonra Services içinde ki FeatureSliderService.cs de implement ettiðin metotlarý doldur.
+Program.cs e servici ekle:
+    builder.Services.AddScoped<IFeatureSliderService, FeatureSliderService>();
+Swagger da testler yapýldý. Api tarafý çalýþýyor.
+Þimdi Frontend tarafýnda Admin tarafýný yapýcaz.
+FrontEnds-DtoLayer-CatalogDtos içine klasör aç.(FeatureSliderDtos) Dto larýný ekle.
+FrontEnds-WebUI-Areas-Admin-Controller da controller oluþtur. (FeatureSlidersController.cs) ve içini doldur.
+FrontEnds-WebUI-Areas-Views içinde _ViewImports.cshtml e Dto yu ekle. Views tarafýnda modelin yolunu daha kýsa yazmak için:
+    @using MultiShop.DtoLayer.CatalogDtos.FeatureSliderDtos
+Admin tarafýnda ki tasarýmlar yapýldý. CRUD iþlemleri çalýþýyor. Feature Slider Admin tarafý bitti.
+
+
+
+
+
+
 
 
 
