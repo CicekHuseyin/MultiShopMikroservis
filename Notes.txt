@@ -412,6 +412,28 @@ FrontEnds-WebUI-Areas-Views içinde _ViewImports.cshtml e Dto yu ekle. Views tara
     @using MultiShop.DtoLayer.CatalogDtos.FeatureSliderDtos
 Admin tarafýnda ki tasarýmlar yapýldý. CRUD iþlemleri çalýþýyor. Feature Slider Admin tarafý bitti.
 
+-------------------------------------------------------------------------------
+Special Offer tablosu ekleme iþlemleri : 
+
+Services-Catalog-Entities-Special Offer.cs entity sini ekle.
+Services-Catalog-Dtos-SpecialOfferDtos içine dto larýný ekle.
+Services-Catalog-Services-SpecialOfferServices içine interface lerini ekle class ile implement et.
+appsettings.json a bir koleksiyon kodu ekle:
+    "SpecialOfferCollectionName": "SpecialOffers",
+bu eklediðin kodu Services-Catalog-Settings içinde interface de tanýmla. class da ise implement et.
+Services-Catalog-Mapping de Mappleme iþlemlerini yap.
+Sonra Services içinde ki SpecialOfferService.cs de implement ettiðin metotlarý doldur.
+Program.cs e servici ekle:
+    builder.Services.AddScoped<ISpecialOfferService, SpecialOfferService>();
+Swagger da testler yapýldý. Api tarafý çalýþýyor.
+Þimdi Frontend tarafýnda Admin tarafýný yapýcaz.
+FrontEnds-DtoLayer-CatalogDtos içine klasör aç.(SpecialOfferDtos) Dto larýný ekle.
+FrontEnds-WebUI-Areas-Admin-Controller da controller oluþtur. (SpecialOffersController.cs) ve içini doldur.
+FrontEnds-WebUI-Areas-Views içinde _ViewImports.cshtml e Dto yu ekle. Views tarafýnda modelin yolunu daha kýsa yazmak için:
+    @using MultiShop.DtoLayer.CatalogDtos.SpecialOfferDtos
+Admin tarafýnda ki tasarýmlar yapýldý. CRUD iþlemleri çalýþýyor. Special Offer Admin tarafý bitti.
+
+
 
 
 
