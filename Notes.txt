@@ -457,6 +457,31 @@ Frontends-WebUI-Views-_View-_ViewImports.cs içine ilgili dto yolunu tanýmla.
 Frontends-WebUI-Views-Shared-Components-_FeatureDefaultComponentPartial.cs alanýnda ilgili Dto ile modeli tanýmla.ve Foreach ile verileri çek.
 Öne Çýkan Alan iþlemleri bitti.
 ---------------------------------------------------------------------------------------------------------------
+Ýndirim Teklifi Alan tablosu Backend Ýþlemleri(OfferDiscount.cs)
+
+Services-Catalog-Entities-OfferDiscount.cs entity sini ekle.
+Services-Catalog-Dtos-OfferDiscountDtos içine dto larýný ekle.
+Services-Catalog-Mapping-GeneralMapping de Mappleme iþlemlerini yap.
+Services-Catalog-Settings de interface içine koleksiyonu prop olarak ekle. Sonra ayný klasörde DatabaseSettings de implement et.
+Settings içine eklediðin koleksiyonu appsettings.json a da ekle.
+Services-Catalog-Services de klasör oluþtur. içine interface ekle. metotlarýný yaz. sonra class ekle implement et.
+Eklediðin services kýsmýnda ki interfacelerini Program.cs IoC konteynarýna ekle. AddScoped<>() ile.
+Daha sonra Services-Catalog-Controllers içine api controller aç. Service i implement alarak CRUD iþlemlerini yaz.
+Backend iþlemleri bitti.
+
+Ýndirim Teklifi Alan tablosu Admin UI Ýþlemleri(OfferDiscount.cs)
+Frontends-DtoLayer-CatalogDtos içine OfferDiscountDtos klasörü aç. Dto larýný ekle.(Backend tarafýndan kopyalarsýn.)
+Frontends-WebUI-Areas-Admin-Controllers içine MVC Controller ekle. CRUD iþlemlerini yap.
+Controller daki endpointlerin view lerini oluþtur. Ýlgili Dto classlarýyla dinamikleþtir.
+Frontends-WebUI-Areas-Admin-Views-_ViewImports.cshtml e ilgili dto nun yolunu tanýmla.
+
+Ýndirim Teklifi Alan tablosu Site UI Ýþlemleri(OfferDiscount.cs)
+Frontends-WebUI-ViewComponents-DeafultViewComponents-_OfferDiscountDefaultViewComponentPartial da IHhttpClientFactory ile backend deki verileri kullanrak iþlem yap.
+Frontends-WebUI-Views-_View-_ViewImports.cs içine ilgili dto yolunu tanýmla.
+Frontends-WebUI-Views-Shared-Components-_OfferDiscountDefaultComponentPartial.cs alanýnda ilgili Dto ile modeli tanýmla.ve Foreach ile verileri çek.
+Ýndirim Teklifi Alanýnda ki iþlemler bitti.
+---------------------------------------------------------------------------------------------------------------
+
 
 
 
