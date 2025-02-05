@@ -432,6 +432,35 @@ FrontEnds-WebUI-Areas-Admin-Controller da controller oluþtur. (SpecialOffersCont
 FrontEnds-WebUI-Areas-Views içinde _ViewImports.cshtml e Dto yu ekle. Views tarafýnda modelin yolunu daha kýsa yazmak için:
     @using MultiShop.DtoLayer.CatalogDtos.SpecialOfferDtos
 Admin tarafýnda ki tasarýmlar yapýldý. CRUD iþlemleri çalýþýyor. Special Offer Admin tarafý bitti.
+----------------------------------------------------------------------------------------------------------
+Öne Çýkan Alan tablosu Backend Ýþlemleri(Feature.cs)
+
+Services-Catalog-Entities-Feature.cs entity sini ekle.
+Services-Catalog-Dtos-FeatureDtos içine dto larýný ekle.
+Services-Catalog-Mapping-GeneralMapping de Mappleme iþlemlerini yap.
+Services-Catalog-Settings de interface içine koleksiyonu prop olarak ekle. Sonra ayný klasörde DatabaseSettings de implement et.
+Settings içine eklediðin koleksiyonu appsettings.json a da ekle.
+Services-Catalog-Services de klasör oluþtur. içine interface ekle. metotlarýný yaz. sonra class ekle implement et.
+Eklediðin services kýsmýnda ki interfacelerini Program.cs IoC konteynarýna ekle. AddScoped<>() ile.
+Daha sonra Services-Catalog-Controllers içine api controller aç. Service i implement alarak CRUD iþlemlerini yaz.
+Backend iþlemleri bitti.
+
+Öne Çýkan Alan tablosu Admin UI Ýþlemleri(Feature.cs)
+Frontends-DtoLayer-CatalogDtos içine FeatureDtos klasörü aç. Dto larýný ekle.(Backend tarafýndan kopyalarsýn.)
+Frontends-WebUI-Areas-Admin-Controllers içine MVC Controller ekle. CRUD iþlemlerini yap.
+Controller daki endpointlerin view lerini oluþtur. Ýlgili Dto classlarýyla dinamikleþtir.
+Frontends-WebUI-Areas-Admin-Views-_ViewImports.cshtml e ilgili dto nun yolunu tanýmla.
+
+Öne Çýkan Alan tablosu Site UI Ýþlemleri(Feature.cs)
+Frontends-WebUI-ViewComponents-DeafultViewComponents-_FeatureDefaultViewComponentPartial da IHhttpClientFactory ile backend deki verileri kullanrak iþlem yap.
+Frontends-WebUI-Views-_View-_ViewImports.cs içine ilgili dto yolunu tanýmla.
+Frontends-WebUI-Views-Shared-Components-_FeatureDefaultComponentPartial.cs alanýnda ilgili Dto ile modeli tanýmla.ve Foreach ile verileri çek.
+Öne Çýkan Alan iþlemleri bitti.
+---------------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 
